@@ -1,6 +1,7 @@
 from aiogram import types, Dispatcher
 from config import bot, dp, ADMINS
 import random
+from keyboards.client_kb import start_markup
 
 
 async def start(message: types.Message):
@@ -10,7 +11,7 @@ async def start(message: types.Message):
                                                  f'/mentors : список менторов которые могут вам помочь \n'
                                                  f'/techmentors : список тех-менторов которые могут вам помочь \n'
                                                  f'/help : помощь вам с дз \n'
-                                                 f'/helpmentors : заполняете анкету и через некоторое время вам напишет ментор\n')
+                                                 f'/helpmentors : заполняете анкету и через некоторое время вам напишет ментор\n', reply_markup=start_markup)
 
 
 # async def mentors(message: types.message):

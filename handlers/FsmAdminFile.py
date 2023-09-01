@@ -1,8 +1,7 @@
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
-from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from config import bot, ADMINS
+from keyboards.client_kb import directions_markup
 
 
 # from Database.bot_db import sql_command_insert
@@ -28,7 +27,7 @@ async def load_name(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['name'] = message.text
     await FSMAdmin.next()
-    await message.answer('Какой у вас направление?')
+    await message.answer('Какой у вас направление?', reply_markup=directions_markup)
 
 
 async def load_direction(message: types.Message, state: FSMContext):
