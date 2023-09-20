@@ -3,3 +3,4 @@ __pycache__
 .env
 ismar
 venv
+bot.sqlite3

@@ -28,3 +28,19 @@ async def sql_command_insert(state):
                        " VALUES (?, ?, ?, ?, ?)", values)
 
         db.commit()
+
+
+async def sql_command_random(message):
+    result = cursor.execute("SELECT * FROM menty").fetchall()
+    random_user = random.choice(result)
+    await message.answer(f'{random_user[1]}, {random_user[2]}, {random_user[3]}\n'
+                         f'{random_user[4]}, {random_user[5]}')
+
+
+async def sql_command_all():
+    return cursor.execute("SELECT * FROM menty").fetchall()
+
+
+async def sql_command_delete(user_id):
+    cursor.execute("DELETE FROM menty WHERE id = ?", (user_id,))
+    db.commit()
