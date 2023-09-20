@@ -3,7 +3,7 @@ from config import bot
 import random
 
 
-def sql_create():
+def sql_create_menty():
     global db, cursor
     db = sqlite3.connect('bot.sqlite3')
     cursor = db.cursor()
@@ -44,3 +44,4 @@ async def sql_command_all():
 async def sql_command_delete(user_id):
     cursor.execute("DELETE FROM menty WHERE id = ?", (user_id,))
     db.commit()
+

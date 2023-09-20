@@ -2,7 +2,7 @@ from aiogram import types, Dispatcher
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from config import bot, dp, ADMINS
-from database.bot_db import sql_command_random, sql_command_delete, sql_command_all
+from database.bot_db_menty import sql_command_random, sql_command_delete, sql_command_all
 
 
 async def delete_data(message: types.Message):
