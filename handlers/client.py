@@ -13,12 +13,13 @@ async def start(message: types.Message):
                                                  f'/techmentors : список тех-менторов которые могут вам помочь \n'
                                                  f'/help : помощь вам с дз \n'
                                                  f'/helpmentors : заполняете анкету и через некоторое время вам напишет ментор\n',
-                                                 reply_markup=start_markup)
+                           reply_markup=start_markup)
 
 
 async def register(message: types.Message):
     await bot.send_message(message.from_user.id,
-                           f'/helpmentors : заполняете анкету и через некоторое время вам напишет ментор\n',
+                           f'/helpmentors : заполняете анкету и через некоторое время вам напишет ментор\n'
+                           f'/regmentor : заполняете анкету, ждете пока вам отправят тестовое задание на менторство\n'
                            )
 
 
@@ -41,4 +42,4 @@ def register_handlers_client(dp: Dispatcher):
     dp.register_message_handler(start, commands=['start'])
     dp.register_message_handler(info, commands=['info'])
     dp.register_message_handler(help, commands=['help'])
-    dp.register_message_handler(register,commands=['register'])
+    dp.register_message_handler(register, commands=['register'])
