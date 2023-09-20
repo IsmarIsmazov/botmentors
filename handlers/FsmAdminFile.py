@@ -2,13 +2,11 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from keyboards.client_kb import directions_markup
-
-
-# from Database.bot_db import sql_command_insert
+from database.bot_db import sql_command_insert
 class FSMAdmin(StatesGroup):
-    name = State()
+    username = State()
     direction = State()
-    group = State()
+    grup = State()
     problem = State()
     numberhw = State()
     submit = State()
@@ -16,16 +14,16 @@ class FSMAdmin(StatesGroup):
 
 async def fsm_start(message: types.Message):
     if message.chat.type == 'private':
-        await FSMAdmin.name.set()
+        await FSMAdmin.username.set()
         await message.answer(f"привет, {message.from_user.first_name}\n"
                              f'Пожалуйста напишите ваше имя')
     else:
         await message.answer('Пиши в личку!')
 
 
-async def load_name(message: types.Message, state: FSMContext):
+async def load_username(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['name'] = message.text
+        data['username'] = message.text
     await FSMAdmin.next()
     await message.answer('Какой у вас направление?', reply_markup=directions_markup)
 
@@ -39,14 +37,14 @@ async def load_direction(message: types.Message, state: FSMContext):
                          '22.1, 33.2, 39.3')
 
 
-async def load_group(message: types.Message, state: FSMContext):
+async def load_grup(message: types.Message, state: FSMContext):
     try:
         if not 20 < float(message.text) < 40:
             await message.answer('такой группы не существует')
             await state.finish()
             return
         async with state.proxy() as data:
-            data['group'] = message.text
+            data['grup'] = message.text
         await FSMAdmin.next()
         await message.answer('какие у вас проблемаы? попытайтесь описать его')
     except:
@@ -64,7 +62,7 @@ async def load_problem(message: types.Message, state: FSMContext):
 async def load_numberhw(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['numberhw'] = message.text
-        await message.answer(f'{data["name"]}, {data["direction"]}, {data["group"]}\n'
+        await message.answer(f'{data["username"]}, {data["direction"]}, {data["grup"]}\n'
                              f'{data["problem"]}, {data["numberhw"]}')
     await FSMAdmin.next()
     await message.answer('Всё верно?')
@@ -79,6 +77,7 @@ async def cancel_help(message: types.Message, state: FSMContext):
 
 async def submit(message: types.Message, state: FSMContext):
     if message.text.lower() == 'да':
+        await sql_command_insert(state)
         await state.finish()
         await message.answer('Сообщение было отправленно Старшему Ментору вашего направление\n'
                              'Скоро вам напишут ментор')
@@ -92,9 +91,9 @@ async def submit(message: types.Message, state: FSMContext):
 def register_handlers_fsm_anketa(dp: Dispatcher):
     dp.register_message_handler(cancel_help, state='*', commands=['cancel'])
     dp.register_message_handler(fsm_start, commands=['helpmentors'])
-    dp.register_message_handler(load_name, state=FSMAdmin.name)
+    dp.register_message_handler(load_username, state=FSMAdmin.username)
     dp.register_message_handler(load_direction, state=FSMAdmin.direction)
-    dp.register_message_handler(load_group, state=FSMAdmin.group)
+    dp.register_message_handler(load_grup, state=FSMAdmin.grup)
     dp.register_message_handler(load_problem, state=FSMAdmin.problem)
     dp.register_message_handler(load_numberhw, state=FSMAdmin.numberhw)
     dp.register_message_handler(submit, state=FSMAdmin.submit)
