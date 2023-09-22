@@ -9,7 +9,7 @@ def sql_create_menty():
     cursor = db.cursor()
 
     if db:
-        print('база данных подключен')
+        print('база данных менти подключен')
     db.execute(
         "CREATE TABLE IF NOT EXISTS menty"
         "(id INTEGER PRIMARY KEY,"
